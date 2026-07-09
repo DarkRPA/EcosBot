@@ -12,11 +12,12 @@ intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 
+database.create_tables()
+
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    database.create_tables()
     print(f"Bot conectado como {bot.user}")
 
 @bot.event

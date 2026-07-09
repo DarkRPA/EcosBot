@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from datetime import timedelta
 import database
-import Verificator
+import utils.Verificator as Verificator
 
 
 class Ecoins(commands.Cog):
