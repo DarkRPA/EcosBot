@@ -132,11 +132,33 @@ def add_user_to_activity(activity, user, role_requested, message_content):
         return True, "fill_added"
 
     for slot in activity["slots"]:
-        if slot["role"] == role_requested and slot["user"] is None:
+        if (
+            slot["role"] == role_requested
+            and slot["user"] is None
+        ):
             slot["user"] = user
             slot["filled_by_fill"] = False
+
+            # Recoloca los fills que sigan esperando
             rebuild_fill_assignments(activity)
+
             return True, "role_added"
+
+    for slot in activity["slots"]:
+        if (
+            slot["role"] == role_requested
+            and slot["user"] is not None
+            and slot.get("filled_by_fill", False)
+        ):
+            # El Fill no se elimina de fill_queue.
+            # Simplemente se sustituye por la persona del rol fijo.
+            slot["user"] = user
+            slot["filled_by_fill"] = False
+
+            # El Fill desplazado intentará entrar automáticamente en otro rol
+            rebuild_fill_assignments(activity)
+
+            return True, "role_added_replacing_fill"
 
     return False, "role_full"
 
