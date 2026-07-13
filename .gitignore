@@ -6,3 +6,8 @@ venv/
 .env.*
 lavalink/Lavalink.jar
 logs/
+pyvenv.cfg
+Lib
+Scripts
+settings.json
+launch.json

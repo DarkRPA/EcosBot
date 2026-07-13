@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from datetime import timedelta
 import database
+import utils.Verificator as Verificator
 
 
 class Ecoins(commands.Cog):
@@ -9,13 +10,13 @@ class Ecoins(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    @commands.has_permissions(administrator=True)
+    @commands.check(Verificator.usuario_puede_ejecutar_comando)
     async def addecoins(self, ctx, member: discord.Member, amount: int):
         database.add_ecoins(member.id, amount)
         await ctx.send(f"🪙 Sumados {amount} Ecoins a {member.mention}")
 
     @commands.command()
-    @commands.has_permissions(administrator=True)
+    @commands.check(Verificator.usuario_puede_ejecutar_comando)
     async def removeecoins(self, ctx, member: discord.Member, amount: int):
         database.add_ecoins(member.id, -amount)
         await ctx.send(f"🪙 Restados {amount} Ecoins a {member.mention}")
